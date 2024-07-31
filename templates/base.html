@@ -1,0 +1,16 @@
+{% extends 'skeleton.html' %}
+{% block body %}
+    <header>
+        <a href="" class="app_logo">GenericCRM</a>
+        <nav>
+            <a href="">About</a>
+            <a href=""></a>
+            <a href=""></a>
+            <a href=""></a>
+        </nav>
+    </header>
+    <footer>
+        &copy; {% now "Y" %}
+        <a href="{% url 'SimplyRecipes:index' %}">GenericCRM</a>.
+    </footer>
+{% endblock body %}
