@@ -1,50 +1,47 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import AbstractUser, Group
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
-class Person(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class User(AbstractUser):
     phone_number = models.CharField(max_length=12, unique=True)
 
-    def __str__(self):
-        return self.user.username
+    class Status(models.TextChoices):
+        salesman = "Salesman", _("Salesman")
+        branch_supervisor = "Branch Supervisor", _("Branch Supervisor")
+        department_manager = "Department Manager", _("Department Manager")
+        client = "Client", _("Client")
+        representative = "Representative", _("Representative")
 
-    class Meta:
-        abstract = True
-
-
-class CategoryGroup(models.Model):
-    group = models.OneToOneField(Group, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.group.name
-
-    class Meta:
-        abstract = True
+    current_status = models.CharField(max_length=40, choices=Status)
 
 
-class Employee(Person):
-    branches = models.ManyToManyField("BranchGroup", through="WorkPeriod")
+class UserHistory(models.Model):
+    branch = models.ForeignKey(Group, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    join_date = models.DateTimeField(auto_now=True)
+    quit_date = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(max_length=40)
+
+
+class Salesman(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    branches = models.ManyToManyField("BranchGroup")
     max_enrolled_branches = models.PositiveSmallIntegerField(default=1)
 
 
-class WorkPeriod(models.Model):
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    branch_group = models.ForeignKey("BranchGroup", on_delete=models.CASCADE)
-    date_joined = models.DateField(auto_now_add=True)
-    date_left = models.DateField(blank=True, null=True)
-
-
-class BranchSupervisor(Person):
+class BranchSupervisor(models.Model):
     branch_group = models.OneToOneField("BranchGroup", on_delete=models.CASCADE)
+    departments = models.ManyToManyField("DepartmentBoard")
 
 
-class DepartmentManager(Person):
+class DepartmentManager(models.Model):
     department = models.OneToOneField("DepartmentBoard", on_delete=models.CASCADE)
+    managers_group = models.ManyToManyField("ManagerGroup")
 
 
-class Client(Person):
-    employees = models.ManyToManyField("Employee", through="Deal")
+class Client(models.Model):
+    employees = models.ManyToManyField("Salesman", through="Deal")
 
 
 class Deal(models.Model):
@@ -55,28 +52,14 @@ class Deal(models.Model):
         acquired = 100
         lost = -1
 
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    salesman = models.ForeignKey(Salesman, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    date_of_state = models.DateField(auto_now_add=True)
+    date_of_state = models.DateField(auto_now=True)
     status = models.IntegerField(choices=Status, default=Status.interested)
 
 
-class Represedddddntative(Person):
+class Representative(models.Model):
     companies = models.ManyToManyField("Company")
-
-
-class BranchGroup(CategoryGroup):
-    max_members = models.PositiveIntegerField(default=5)
-
-    # def add_member(self, user):
-    #     if self.group.user_set.count() < self.max_members:
-    #         self.group.user_set.add(user)
-    #     else:
-    #         raise ValueError("Cannot add more members to this group.")
-
-
-class DepartmentBoard(models.Model):
-    department_manager = models.ForeignKey(DepartmentManager, on_delete=models.CASCADE)
 
 
 class Company(models.Model):
@@ -87,3 +70,25 @@ class Company(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class CategoryGroup(models.Model):
+    group = models.ManyToManyField(Group)
+
+    def __str__(self):
+        return self.group.name
+
+    class Meta:
+        abstract = True
+
+
+class BranchGroup(CategoryGroup):
+    max_members = models.PositiveSmallIntegerField(default=5)
+
+
+class DepartmentBoard(CategoryGroup):
+    pass
+
+
+class ManagerGroup(CategoryGroup):
+    admin = models.ForeignKey(User, on_delete=models.CASCADE)
