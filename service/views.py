@@ -3,12 +3,8 @@ from django.views.generic import TemplateView
 
 
 class IndexView(TemplateView):
-    template_name = "base.html"
+    template_name = "service/index.html"
 
 
-class EmployeeDashboard(TemplateView):
-    template_name = "dashboards/employee-dashboard.html"
-
-
-class SupervisorDashboard(TemplateView):
-    template_name = "dashboards/supervisor-dashboard.html"
+def dashboard_view(request, current_status):
+    return render(request, f"{current_status}/dashboard.html")

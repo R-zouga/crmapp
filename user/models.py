@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class User(AbstractUser):
+    email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=12, unique=True)
 
     class Status(models.TextChoices):
@@ -14,6 +15,8 @@ class User(AbstractUser):
         representative = "Representative", _("Representative")
 
     current_status = models.CharField(max_length=40, choices=Status)
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
 
 
 class UserHistory(models.Model):

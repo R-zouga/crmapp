@@ -35,7 +35,7 @@ ROOT_URLCONF = "CRMProject.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [BASE_DIR / "templates", BASE_DIR / "user/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -94,3 +94,5 @@ STATIC_URL = "static/"
 LOGOUT_REDIRECT_URL = "/"
 
 AUTH_USER_MODEL = "user.User"
+DEFAULT_FROM_EMAIL = "djano@gmail.com"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

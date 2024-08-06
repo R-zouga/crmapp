@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
-{% block body %}
+{% block content %}
     <h1>Login</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
+        <small>Forgot your password? <a href="{% url 'password_reset' %}">Reset your password</a></small>
         <button type="submit">Login</button>
     </form>
-{% endblock body %}
+    <small>Don't have an account? <a href="{% url 'index' %}">Create an account</a></small>
+{% endblock content %}
