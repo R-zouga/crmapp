@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "service.apps.ServiceConfig",
     "user.apps.UserConfig",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -28,6 +29,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "CRMProject.urls"
@@ -96,3 +98,8 @@ LOGOUT_REDIRECT_URL = "/"
 AUTH_USER_MODEL = "user.User"
 DEFAULT_FROM_EMAIL = "djano@gmail.com"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]

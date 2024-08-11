@@ -1,0 +1,23 @@
+{% extends 'service/dashboard.html' %}
+{% block dashboard %}
+    <h1>Your history in the company</h1>
+    <table>
+        <tr>
+            <th>Begining Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+            <th>Belonging to</th>
+            <th>Responsible for</th>
+        </tr>
+        {% for role in userhistory %}
+            <tr>
+                <td>{{ role.join_date|date:"d/m/Y" }}</td>
+                <td>{{ role.quit_date|date:"d/m/Y" }}</td>
+                <td>{{ role.status }}</td>
+                <td>{{ role.belonging_to.name }}</td>
+                <td>{{ role.responsible_for.name }}</td>
+            </tr>
+        {% endfor %}
+
+    </table>
+{% endblock dashboard %}

@@ -22,10 +22,10 @@
               rel="stylesheet">
 
         {#========== Normalize css for browsers ==========#}
-        <link rel="stylesheet" href="{% static 'normalize.css' %}">
+        <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
 
         {#========== The Skeleton css file that will contain css variables, and basic styling and utilities for almost all pages ==========#}
-        <link rel="stylesheet" href="{% static 'skeleton.css' %}">
+        <link rel="stylesheet" href="{% static 'css/skeleton.css' %}">
 
         {#========== Block for all other css files ==========#}
         {% block styles %}{% endblock styles %}
@@ -33,14 +33,14 @@
         {#========== Title block ==========#}
         <title>
             {% block title %}
-                Manage your services in an easy and intuitive way | CRM APP
+                Manage your services in an easy and intuitive way | Generic CRM
             {% endblock title %}
         </title>
     </head>
 
     <body>
-        {#==========  Manage header and footer for all templates in base template ==========#}
-        {% block base %}{% endblock base %}
+        {#========== All content goes here for ALL remaining templates ==========#}
+        {% block body %}{% endblock body %}
 
         {#========== Manage all js scripts in this block =========#}
         {% block scripts %}{% endblock scripts %}

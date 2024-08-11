@@ -1,27 +1,10 @@
 {% extends 'skeleton.html' %}
-{% block base %}
-    <header>
-        <a href="{% url 'index' %}" class="app_logo">GenericCRM</a>
-        <nav>
-            {% if user.is_authenticated %}
-                <a href="dashboard/{{ user.current_status.lower }}/">{{ user.get_full_name }}</a>
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">Logout</button>
-                </form>
-            {% else %}
-                <a href="{% url 'login' %}">Login</a>
-            {% endif %}
-            <a href=""></a>
-            <a href=""></a>
-        </nav>
-    </header>
+{#========== The base template for templates with header and footer ==========#}
+{% block body %}
+    {% include 'components/header.html' %}
 
-    {#========== Content of all pages goes here now ==========#}
+    {#========== Remaining content goes here now ==========#}
     {% block content %}{% endblock content %}
-
-    <footer>
-        &copy; {% now "Y" %}
-        <a href="{% url 'index' %}">GenericCRM</a>.Licensed under the MIT License.
-    </footer>
-{% endblock base %}
+    
+    {% include 'components/footer.html' %}
+{% endblock body %}
