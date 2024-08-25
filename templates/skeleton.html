@@ -29,6 +29,9 @@
 
         {#========== Block for all other css files ==========#}
         {% block styles %}{% endblock styles %}
+    
+        {#========== Manage all js scripts in this block =========#}
+        {% block scripts %}{% endblock scripts %}
 
         {#========== Title block ==========#}
         <title>
@@ -41,9 +44,6 @@
     <body>
         {#========== All content goes here for ALL remaining templates ==========#}
         {% block body %}{% endblock body %}
-
-        {#========== Manage all js scripts in this block =========#}
-        {% block scripts %}{% endblock scripts %}
     </body>
 
 

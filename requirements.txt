@@ -14,3 +14,4 @@ typing_extensions==4.12.2
 tzdata==2024.1
 
 django-debug-toolbar~=4.4.6
+Faker~=28.0.0

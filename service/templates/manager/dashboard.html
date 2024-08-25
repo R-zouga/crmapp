@@ -1,0 +1,25 @@
+{% extends 'service/dashboard.html' %}
+{% block dashboard %}
+    <h2>You are in charge of {{ manager.manager.department.group.name }} Department</h2>
+    <p>Here are the supervisors currently under your department:</p>
+    <table>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Joined the department at</th>
+            <th>Last Seen</th>
+        </tr>
+        {% for supervisor in supervisors %}
+            <tr>
+                <td>{{ supervisor.user.first_name }} </td>
+                <td>{{ supervisor.user.last_name }} </td>
+                <td>{{ supervisor.user.email }} </td>
+                <td>{{ supervisor.user.phone_number }}</td>
+                <td> {{ supervisor.user.latest_record.0.join_date|date:"d/m/Y" }}</td>
+                <td>{{ supervisor.user.last_logout|date:"d/m/Y \a\t H:i" }} </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock dashboard %}

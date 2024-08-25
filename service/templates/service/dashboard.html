@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if user.last_logout %}
-        <h1>Welcome Back {{ user.get_full_name }}</h1>
-        <p>Last Seen at: {{ user.last_logout|date:"l, d/m/Y \a\t H:i" }} </p>
+        <h1>Welcome Back {{ user.full_name }}</h1>
+        <p>Last Seen: {{ user.last_logout|date:"l, d/m/Y \a\t H:i" }}</p>
     {% else %}
-        <h1>Hello {{ user.get_full_name}} </h1>
+        <h1>Hello {{ user.full_name}} </h1>
         <p>Congrats on making it to your dashboard for the first time!</p>
         <p>Your first Login: {{ user.last_login|date:"l, d/m/Y \a\t H:i" }}</p>
     {% endif %}
     <aside>
         <nav>
             {% block navigation %}
-                <a href="{% url 'history' user.current_status%}">Your history</a>
+                <a href="{% url 'history' user.current_status %}">Your history</a>
             {% endblock navigation %}
         </nav>
     </aside>
