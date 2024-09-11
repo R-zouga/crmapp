@@ -1,0 +1,12 @@
+footer {
+    margin-top: auto;
+    text-align: center;
+    font-size: 1.125rem;
+    color: var(--background);
+    background: var(--text);
+    padding-block: 30px;
+}
+
+footer a:hover {
+    color: var(--accent300);
+}

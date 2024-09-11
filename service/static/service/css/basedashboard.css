@@ -1,0 +1,11 @@
+aside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-height: 100dvh;
+    width: calc(var(--padding-left) - 40px);
+    background-color: var(--primary400);
+    display: grid;
+    place-items: center;
+    z-index: -1;
+}
