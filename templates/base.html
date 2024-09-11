@@ -1,10 +1,22 @@
 {% extends 'skeleton.html' %}
+{% load static %}
+
+{% block basicstyles %}
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+
+    {#========== Block for rest of used css files ==========#}
+    {% block styles %}{% endblock styles %}
+{% endblock basicstyles %}
+
 {#========== The base template for templates with header and footer ==========#}
 {% block body %}
     {% include 'components/header.html' %}
 
     {#========== Remaining content goes here now ==========#}
-    {% block content %}{% endblock content %}
-    
+    <section class="container">
+        {% block content %}{% endblock content %}
+    </section>
+
     {% include 'components/footer.html' %}
 {% endblock body %}

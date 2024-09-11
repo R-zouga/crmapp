@@ -1,4 +1,31 @@
 {% extends 'service/dashboard.html' %}
+{% load static %}
+
 {% block dashboard %}
-    <h2>Hello Employee</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Date of State</th>
+            <th>Status</th>
+            <th>Client Full Name</th>
+            <th>Attributed to Branch</th>
+            <th>Service Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for deal in deals %}
+            <tr>
+                <td>{{ deal.date_of_state }}</td>
+                <td>{{ deal.get_status_display }}</td>
+                <td>{{ deal.service_seeker.full_name }}</td>
+                <td>{{ deal.attributed_to }}</td>
+                <td>{{ deal.service }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock dashboard %}
+
+{% block scripts %}
+    <script src="{% static 'js/htmx.js' %}"></script>
+{% endblock scripts %}

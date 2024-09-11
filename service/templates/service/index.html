@@ -1,31 +1,49 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'service/css/index.css' %}">
+{% endblock styles %}
+
 {% block content %}
-    <section>
-        <main>
-            <h1>About the CRM Project</h1>
-            <p> This End of Year Project represents a personal attempt to create a dedicated Customer Relationship
-                Management System for small businesses and companies. Sure there are WAY BETTER SOLUTIONS than mine,
-                but I
-                honestly enjoyed the multiple challenges and complexities when creating this project and deploying it
-                on
-                the web. So for anyone who made it till this far and wants to use this project for personal or
-                professional usage, PLEASE IT WILL MAKE ME PLEASED. Since the approach for this CRM was very
-                generic and not oriented for direct usage, you can still tweak it to make it useful, for example:
-            </p>
-            <ul>
-                <li>
-                    You can make it for a car rental agency to keep track of its renting process and demand, get monthly
-                    reports for income and manage the cars availability and condition. All you have to do is add all
-                    necessary
-                    code to the Service app. Please refer to the Projects repo for further information.
-                </li>
-                <li>
-                    You can make it for a consulting agency to keep track of its multiple services and client requests.
-                </li>
-                <li>Same idea for small booking agencies, IT companies, and much, much more!</li>
-            </ul>
-            <p> In conclusion, this project could be really interesting for anyone who really wants to take his Django
-                skills to the next level, and why not even contribute to it. Best of luck and Thank You :)</p>
-        </main>
-    </section>
+    {% if messages %}
+        <ul class="messages">
+            <i class='bx bx-x bx-md'></i>
+            {% for message in messages %}
+                <li class="{{ message.level_tag }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <main>
+        <h1>About the CRM Project</h1>
+        <p>
+            This End of Year Project represents a personal attempt to create a dedicated Customer Relationship
+            Management System for small businesses and companies. <br>Sure, there are <b>WAY BETTER SOLUTIONS</b> than
+            mine,
+            but I
+            honestly enjoyed the multiple challenges and complexities when creating this project and deploying it
+            on
+            the web.
+            So for anyone who made it till this far and wants to use this project for personal or
+            professional usage, <b>PLEASE IT WILL MAKE ME PLEASED</b>.
+            Since the approach for this CRM was very
+            generic and not oriented for specific usage, you can still tweak it to make it useful, for example:
+        </p>
+        <ul>
+            <li>
+                You can make it for a car rental agency to keep track of its renting process and demand, get monthly
+                reports for income and manage the car's availability and condition. All you have to do is add all
+                necessary
+                code to the Service app. Please refer to the <a href="#" target="_blank">Projects repo</a> for further
+                information.
+            </li>
+            <li>You can make it for a consulting agency to keep track of its multiple services and client requests.</li>
+            <li>Same idea for small booking agencies, IT companies, and much, much more!</li>
+        </ul>
+        <p> In conclusion, this project could be really interesting for anyone who really wants to take his Django
+            skills to the next level, and why not even contribute to it. Best of luck and Thank You :)</p>
+    </main>
+    {% block scripts %}
+        <script src="{% static 'service/js/index.js' %}"></script>
+    {% endblock scripts %}
 {% endblock content %}

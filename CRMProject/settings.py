@@ -16,8 +16,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "service.apps.ServiceConfig",
     "user.apps.UserConfig",
+    "service.apps.ServiceConfig",
     "debug_toolbar",
 ]
 

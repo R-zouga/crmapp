@@ -2,7 +2,7 @@ from django.urls import path, include
 from service import views
 
 Salesman = [
-    path("dashboard/", views.salesman_dashbord, name="SalesmanDashboard"),
+    path("dashboard/", views.SalesmanDashboard.as_view(), name="SalesmanDashboard"),
 ]
 
 Supervisor = [

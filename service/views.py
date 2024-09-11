@@ -1,4 +1,4 @@
-from django.db.models import Prefetch, Max
+from django.db.models import Prefetch, Q
 from django.shortcuts import render
 
 from service.forms import StatusFilterForm
@@ -20,7 +20,7 @@ class SupervisorDashboard(TemplateView):
         ).get(email=self.request.user.email)
         context["salesmen"] = (
             context["supervisor"]
-            .supervisor.branch_group.salesman_set.select_related("user")
+            .supervisor.branch_group.salesmen_set.select_related("user")
             .prefetch_related(
                 Prefetch(
                     "user__userhistory_set",
@@ -73,17 +73,20 @@ class ManagerDashboard(TemplateView):
         return context
 
 
-def salesman_dashbord(request):
-    form = StatusFilterForm(request.GET or None)
-    salesman = models.Salesman.objects.get(user=request.user)
-    deals = salesman.deal_set.all().select_related("client__user", "attributed_to", "service")
+class SalesmanDashboard(TemplateView):
+    template_name = "salesman/dashboard.html"
 
-    if form.is_valid():
-        status = form.cleaned_data.get("status")
-        if status:
-            deals = salesman.deal_set.filter(status=status)
-
-    if "HX-Request" in request.headers:
-        return render(request, "salesman/deal_list_partial.html", {"deals": deals})
-
-    return render(request, "salesman/deal_list.html", {"form": form, "deals": deals})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["salesman"] = models.User.objects.get(email=self.request.user.email).salesman
+        context["deals"] = (
+            models.Deal.objects.filter(
+                Q(status=models.Deal.Status.interested)
+                | Q(status=models.Deal.Status.further_motivation)
+            )
+            # .exclude(status=models.Deal.Status.acquired)
+            .select_related(
+                "service_seeker", "attributed_to", "representing", "service"
+            )
+        )
+        return context

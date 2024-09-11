@@ -9,28 +9,12 @@
  */
 
 html {
-    line-height: 1.15; /* 1 */
+    line-height: 1.7; /* 1 */
     -webkit-text-size-adjust: 100%; /* 2 */
 }
 
 /* Sections
    ========================================================================== */
-
-/**
- * Remove the margin in all browsers.
- */
-
-body {
-    margin: 0;
-}
-
-/**
- * Render the `main` element consistently in IE.
- */
-
-main {
-    display: block;
-}
 
 /**
  * Correct the font size and margin on `h1` elements within `section` and
@@ -39,7 +23,6 @@ main {
 
 h1 {
     font-size: 2em;
-    margin: 0.67em 0;
 }
 
 /* Grouping content
@@ -114,7 +97,7 @@ samp {
  */
 
 small {
-    font-size: 80%;
+    font-size: 90%;
 }
 
 /**
