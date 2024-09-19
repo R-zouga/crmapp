@@ -12,7 +12,7 @@ header a {
     color: inherit;
 }
 
-button:hover, header a:hover {
+header button:hover, header a:hover {
     color: var(--secondary700);
 }
 
@@ -28,7 +28,7 @@ header nav {
     gap: 20px;
 }
 
-button {
+header button {
     border: none;
     color: var(--secondary400);
     cursor: pointer;

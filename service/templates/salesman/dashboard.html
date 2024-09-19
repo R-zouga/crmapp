@@ -1,31 +1,44 @@
 {% extends 'service/dashboard.html' %}
 {% load static %}
 
+{% block styles3 %}
+    <link rel="stylesheet" href="{% static 'service/css/table.css' %}">
+{% endblock styles3 %}
+
+{% block navigation %}
+    <a href="{% url 'lost-deals' %}">Your lost deals</a>
+    <a href="{% url 'appended-deal' %}">Your appended deals</a>
+{% endblock navigation %}
 {% block dashboard %}
-    <table>
-        <thead>
-        <tr>
-            <th>Date of State</th>
-            <th>Status</th>
-            <th>Client Full Name</th>
-            <th>Attributed to Branch</th>
-            <th>Service Name</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for deal in deals %}
-            <tr>
-                <td>{{ deal.date_of_state }}</td>
-                <td>{{ deal.get_status_display }}</td>
-                <td>{{ deal.service_seeker.full_name }}</td>
-                <td>{{ deal.attributed_to }}</td>
-                <td>{{ deal.service }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <h2 class="table">Your following meetings</h2>
+    {#<table>#}
+    {#    <thead>#}
+    {#    <tr>#}
+    {#        <th>Date of State</th>#}
+    {#        <th>Status</th>#}
+    {#        <th>Client Full Name</th>#}
+    {#        <th>Attributed to Branch</th>#}
+    {#        <th>Service Name</th>#}
+    {#    </tr>#}
+    {#    </thead>#}
+    {#    <tbody>#}
+    {#    {% for deal in deals %}#}
+    {#        <tr>#}
+    {#            <td>{{ deal.date_of_state }}</td>#}
+    {#            <td>{{ deal.get_status_display }}</td>#}
+    {#            <td>{{ deal.service_seeker.full_name }}</td>#}
+    {#            <td>{{ deal.attributed_to }}</td>#}
+    {#            <td>{{ deal.service }}</td>#}
+    {#        </tr>#}
+    {#    {% endfor %}#}
+    {#    </tbody>#}
+    {#</table>#}
+    <h2 class="plot">Your earnings for This Year</h2>
+
+    {{ earnings_graph|safe }}
+
+
+
 {% endblock dashboard %}
 
-{% block scripts %}
-    <script src="{% static 'js/htmx.js' %}"></script>
-{% endblock scripts %}
+

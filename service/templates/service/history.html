@@ -1,6 +1,11 @@
-{% extends 'service/dashboard.html' %}
-{% block content %}
-    <h1>Your history in the company</h1>
+{% extends template %}
+{% load static %}
+
+{% block styles3 %}
+    <link rel="stylesheet" href="{% static 'service/css/table.css' %}">
+{% endblock styles3 %}
+{% block dashboard %}
+    <h2 class="table">Your history in the company</h2>
     <table>
         <tr>
             <th>Join Date</th>
@@ -9,15 +14,14 @@
             <th>Belonging to</th>
             <th>Responsible for</th>
         </tr>
-        {% for role in userhistory %}
+        {% for record in userhistory %}
             <tr>
-                <td>{{ role.join_date|date:"d/m/Y" }}</td>
-                <td>{{ role.quit_date|date:"d/m/Y" }}</td>
-                <td>{{ role.status }}</td>
-                <td>{{ role.belonging_to.name }}</td>
-                <td>{{ role.responsible_for.name }}</td>
+                <td>{{ record.join_date|date:"d/m/Y" }}</td>
+                <td>{{ record.quit_date|date:"d/m/Y" }}</td>
+                <td>{{ record.status }}</td>
+                <td>{{ record.belonging_to.name }}</td>
+                <td>{{ record.responsible_for.name }}</td>
             </tr>
         {% endfor %}
-
     </table>
-{% endblock content %}
+{% endblock dashboard %}

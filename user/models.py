@@ -8,8 +8,8 @@ from django.contrib.auth.models import (
     GroupManager,
 )
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 from service.models import Service
+from django.utils import timezone
 
 
 class Group(models.Model):
@@ -19,9 +19,9 @@ class Group(models.Model):
     The reason for this is to alter the primary key to be the name of the group instead of an id field.
     """
 
-    name = models.CharField(_("name"), max_length=150, primary_key=True)
+    name = models.CharField("name", max_length=150, primary_key=True)
     permissions = models.ManyToManyField(
-        Permission, verbose_name=_("permissions"), related_name="custom_group_set"
+        Permission, verbose_name="permissions", related_name="custom_group_set"
     )
 
     objects = GroupManager()
@@ -90,48 +90,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 # All following classes are all kinds of users in our Project:
 # Salesman, Supervisor, Manager, Client, Representative
 # Admin is a special case, which is simply an instance of User.
-class Salesman(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, primary_key=True, db_column="user_email"
-    )
-    branches = models.ManyToManyField("BranchGroup", related_name="salesmen_set")
-    max_enrolled_branches = models.PositiveSmallIntegerField(default=1)
-
-    class Meta:
-        verbose_name_plural = _("Salesmen")
-
-
-class Supervisor(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, primary_key=True, db_column="user_email"
-    )
-    branch_group = models.OneToOneField(
-        "BranchGroup", on_delete=models.CASCADE, db_column="branch_name"
-    )
-    departments = models.ManyToManyField("DepartmentBoard")
-
-
-class Manager(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, primary_key=True, db_column="user_email"
-    )
-    department = models.OneToOneField(
-        "DepartmentBoard", on_delete=models.CASCADE, db_column="department_name"
-    )
-    managers_group = models.ManyToManyField("ManagerGroup")
-
-
-class Client(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, primary_key=True, db_column="user_email"
-    )
-
-
-class Representative(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, primary_key=True, db_column="user_email"
-    )
-    companies = models.ManyToManyField("Company", related_name="companies_set")
 
 
 class UserHistory(models.Model):
@@ -140,11 +98,11 @@ class UserHistory(models.Model):
     """
 
     class Status(models.TextChoices):
-        salesman = "Salesman", _("Salesman")
-        branch_supervisor = "Supervisor", _("Supervisor")
-        department_manager = "Manager", _("Manager")
-        client = "Client", _("Client")
-        representative = "Representative", _("Representative")
+        salesman = "Salesman", "Salesman"
+        branch_supervisor = "Supervisor", "Supervisor"
+        department_manager = "Manager", "Manager"
+        client = "Client", "Client"
+        representative = "Representative", "Representative"
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, db_column="user_email")
     join_date = models.DateField(default=date.today)
@@ -167,49 +125,6 @@ class UserHistory(models.Model):
 
     class Meta:
         ordering = ["-join_date"]
-
-
-class Deal(models.Model):
-    """Deal class is the most important model that stores ALL SERVICES provided
-    to the clients and companies' representatives."""
-
-    class Status(models.IntegerChoices):
-        interested = 0
-        first_meeting = 1
-        further_motivation = 2
-        acquired = 100
-        lost = -1
-
-    salesman = models.ForeignKey(
-        Salesman, on_delete=models.CASCADE, db_column="salesman_email"
-    )
-    attributed_to = models.ForeignKey(
-        "BranchGroup", on_delete=models.CASCADE, db_column="branch_name"
-    )
-    service_seeker = models.ForeignKey(
-        User, on_delete=models.CASCADE, db_column="seeker_email"
-    )
-    representing = models.ForeignKey(
-        "Company", on_delete=models.CASCADE, db_column="company_name", null=True
-    )
-    service = models.ForeignKey(
-        Service, on_delete=models.CASCADE, db_column="service_name"
-    )
-    date_of_state = models.DateField(default=date.today)
-    status = models.SmallIntegerField(choices=Status, default=Status.interested)
-
-    class Meta:
-        ordering = ["-date_of_state"]
-
-
-class Company(models.Model):
-    name = models.CharField(max_length=100, primary_key=True)
-    email = models.EmailField()
-    location = models.CharField(max_length=150)
-    phone_number = models.CharField(max_length=12, unique=True)
-
-    def __str__(self):
-        return self.name
 
 
 class CategoryGroup(models.Model):

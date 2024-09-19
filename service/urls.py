@@ -3,6 +3,10 @@ from service import views
 
 Salesman = [
     path("dashboard/", views.SalesmanDashboard.as_view(), name="SalesmanDashboard"),
+    path("lost-deals", views.LostDeals.as_view(), name="lost-deals"),
+    path("further-motivation/<int:id>", views.further_motivation, name="further-motivation"),
+    path("appended-deals", views.AppendedDeals.as_view(), name="appended-deal"),
+    path("appended-deal/<int:id>", views.meeting_review, name="meeting-review"),
 ]
 
 Supervisor = [

@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block styles %}
+{% block styles2 %}
     <link rel="stylesheet" href="{% static 'service/css/index.css' %}">
-{% endblock styles %}
+{% endblock styles2 %}
 
 {% block content %}
     {% if messages %}
@@ -43,7 +43,7 @@
         <p> In conclusion, this project could be really interesting for anyone who really wants to take his Django
             skills to the next level, and why not even contribute to it. Best of luck and Thank You :)</p>
     </main>
-    {% block scripts %}
+    {% block scripts1 %}
         <script src="{% static 'service/js/index.js' %}"></script>
-    {% endblock scripts %}
+    {% endblock scripts1 %}
 {% endblock content %}

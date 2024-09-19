@@ -1,0 +1,32 @@
+<table id="table">
+    <tr>
+        <th></th>
+        <th>Date of State</th>
+        <th>Client Full Name</th>
+        <th>Representing</th>
+        <th>Attributed to Branch</th>
+        <th>Service Name</th>
+        <th>Status</th>
+    </tr>
+    {% for record in appended_deals %}
+        <tr>
+            <td>
+                <button class="button" type="submit"
+                        hx-target="#table"
+                        hx-trigger="click"
+                        hx-get="/Salesman/appended-deal/{{ record.id }}"
+                        hx-swap="outerHTML"
+                        hx-confirm="Do you confirm setting up a meeting with the client?">
+                    Meeting
+                </button>
+
+            </td>
+            <td>{{ record.date_of_state }} </td>
+            <td>{{ record.service_seeker.full_name }} </td>
+            <td>{{ record.representing }} </td>
+            <td>{{ record.attributed_to }} </td>
+            <td>{{ record.service }} </td>
+            <td>{{ record.get_status_display }}</td>
+        </tr>
+    {% endfor %}
+</table>

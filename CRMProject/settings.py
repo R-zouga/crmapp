@@ -19,6 +19,11 @@ INSTALLED_APPS = [
     "user.apps.UserConfig",
     "service.apps.ServiceConfig",
     "debug_toolbar",
+    "Client.apps.ClientConfig",
+    "Salesman.apps.SalesmanConfig",
+    "Supervisor.apps.SupervisorConfig",
+    "Manager.apps.ManagerConfig",
+    "Representative.apps.RepresentativeConfig"
 ]
 
 MIDDLEWARE = [

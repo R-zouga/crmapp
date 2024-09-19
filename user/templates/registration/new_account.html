@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block styles %}
+{% block styles2 %}
     <link rel="stylesheet" href="{% static 'user/css/form.css' %}">
-{% endblock styles %}
+{% endblock styles2 %}
 
 {% block content %}
     <form method="post">
+        <h1>Create New Account</h1>
         {% csrf_token %}
         {{ form.non_field_errors }}
         {% for field in form %}

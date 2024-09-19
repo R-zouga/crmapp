@@ -15,7 +15,7 @@ input {
     width: 250px;
 }
 
-button {
+.button {
     font-size: 1.125rem;
     padding: 10px 30px;
     background-color: var(--secondary600);
@@ -25,7 +25,7 @@ button {
     transition: background-color 0.5s;
 }
 
-button:hover {
+.button:hover {
     background-color: var(--secondary700);
 }
 

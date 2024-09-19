@@ -23,7 +23,7 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
-    path("new_account/", views.CreateForm.as_view(), name="new_account"),
+    path("new_account/", views.CreateNewClient.as_view(), name="new_account"),
 
 ]
 

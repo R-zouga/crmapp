@@ -16,7 +16,7 @@ class LoginView(auth_views.LoginView):
         return redirect(f"/{user.current_status}/dashboard/")
 
 
-class CreateForm(SuccessMessageMixin, FormView):
+class CreateNewClient(SuccessMessageMixin, FormView):
     model = models.User
     form_class = UserForm
     template_name = "registration/new_account.html"
