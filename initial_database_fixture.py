@@ -4,7 +4,8 @@ import django
 from django.db import transaction
 
 from faker import Faker
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
+from django.utils.timezone import make_aware
 
 # Set the environment variable for Django settings module.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "CRMProject.settings")
@@ -13,8 +14,12 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "CRMProject.settings")
 # Otherwise, an Exception will be thrown.
 django.setup()
 
-from user import models
-from service.models import Service
+from User import models as UserModel
+from Client import models as ClientModel
+from Salesman import models as SalesmanModel
+from Supervisor import models as SupervisorModel
+from Manager import models as ManagerModel
+from Service.models import Service
 
 fake = Faker()
 
@@ -45,75 +50,73 @@ def return_user_dictionary(status=""):
     return user
 
 
+def create_deal(**kwargs):
+    SalesmanModel.Deal.objects.create(**kwargs)
+
+
 # Using transaction will make sure either ALL database operations are made
 # or revert changes if Exception occurred in the middle of the transaction.
 try:
     with transaction.atomic():
         for _ in range(2):
-            group = models.Group.objects.create(name=fake.unique.street_name())
-            models.BranchGroup.objects.create(
-                group=group, max_members=fake.random_int(min=20, max=50)
+            group = UserModel.Group.objects.create(name=fake.unique.street_name())
+            SalesmanModel.BranchGroup.objects.create(
+                group=group, max_members=fake.random_int(min=6, max=10)
             )
 
-        group = models.Group.objects.create(name=fake.unique.street_name())
-        department = models.DepartmentBoard.objects.create(group=group)
+        group = UserModel.Group.objects.create(name=fake.unique.street_name())
+        department = SupervisorModel.DepartmentBoard.objects.create(group=group)
 
-        admin1 = models.User.objects.create_superuser(**return_user_dictionary())
+        admin = UserModel.User.objects.create_superuser(**return_user_dictionary())
 
-        group = models.Group.objects.create(name=fake.unique.street_name())
-        manager_group = models.ManagerGroup.objects.create(group=group, admin=admin1)
+        group = UserModel.Group.objects.create(name=fake.unique.street_name())
+        manager_group = ManagerModel.ManagerGroup.objects.create(
+            group=group, admin=admin
+        )
 
-        for _ in range(4):
-            user = models.User.objects.create_user(**return_user_dictionary("Salesman"))
-            models.Salesman.objects.create(
+        for _ in range(10):
+            user = UserModel.User.objects.create_user(
+                **return_user_dictionary("Salesman")
+            )
+            SalesmanModel.Salesman.objects.create(
                 user=user, max_enrolled_branches=fake.random_int(1, 4)
             )
 
-        branches = models.BranchGroup.objects.all()
+        branches = SalesmanModel.BranchGroup.objects.all()
         for i in range(2):
-            user = models.User.objects.create_user(
+            user = UserModel.User.objects.create_user(
                 **return_user_dictionary("Supervisor")
             )
-            models.Supervisor.objects.create(user=user, branch_group=branches[i])
+            SupervisorModel.Supervisor.objects.create(
+                user=user, branch_group=branches[i]
+            )
 
-        user = models.User.objects.create_user(**return_user_dictionary("Manager"))
-        manager = models.Manager.objects.create(user=user, department=department)
+        user = UserModel.User.objects.create_user(**return_user_dictionary("Manager"))
+        manager = ManagerModel.Manager.objects.create(user=user, department=department)
 
-        salesmen = models.Salesman.objects.all()
-        for i in range(2):
-            branches[i].salesmen_set.add(*salesmen[2 * i : 2 * i + 2])
+        salesmen = SalesmanModel.Salesman.objects.all()
+        branches[0].salesmen_set.add(*salesmen[:6])
+        branches[1].salesmen_set.add(*salesmen[6:])
 
-        department.supervisor_set.add(*models.Supervisor.objects.all())
+        department.supervisor_set.add(*SupervisorModel.Supervisor.objects.all())
         manager_group.manager_set.add(manager)
 
         for _ in range(5):
-            user = models.User.objects.create_user(**return_user_dictionary("Client"))
-            models.Client.objects.create(user=user)
-
-        for _ in range(3):
-            user = models.User.objects.create_user(
-                **return_user_dictionary("Representative")
+            user = UserModel.User.objects.create_user(
+                **return_user_dictionary("Client")
             )
-            models.Representative.objects.create(user=user)
-
-        for _ in range(5):
-            models.Company.objects.create(
-                email=fake.unique.company_email(),
-                name=fake.unique.company(),
-                location=fake.address(),
-                phone_number=fake.unique.numerify("############"),
-            )
+            ClientModel.Client.objects.create(user=user)
 
         for salesman in salesmen:
-            models.UserHistory.objects.create(
+            UserModel.UserHistory.objects.create(
                 join_date=date(2023, 1, 1),
                 status="Salesman",
                 belonging_to=salesman.branches.first().group,
                 user=salesman.user,
             )
 
-        for supervisor in models.Supervisor.objects.all():
-            models.UserHistory.objects.create(
+        for supervisor in SupervisorModel.Supervisor.objects.all():
+            UserModel.UserHistory.objects.create(
                 join_date=date(2023, 1, 1),
                 status="Supervisor",
                 belonging_to=department.group,
@@ -121,7 +124,7 @@ try:
                 user=supervisor.user,
             )
 
-        models.UserHistory.objects.create(
+        UserModel.UserHistory.objects.create(
             join_date=date(2023, 1, 1),
             status="Manager",
             belonging_to=manager_group.group,
@@ -129,77 +132,90 @@ try:
             user=manager.user,
         )
 
-        clients = models.Client.objects.all()
+        for client in ClientModel.Client.objects.all():
+            UserModel.UserHistory.objects.create(
+                join_date=date(2023, 1, 1),
+                status="Client",
+                user=client.user,
+            )
+
+        clients = ClientModel.Client.objects.all()
 
         for salesman in salesmen:
             attributed_to = salesman.branches.first()
-            for _ in range(1_000):
+            for _ in range(200):
                 service_seeker = fake.random_element(clients).user
                 service = Service.objects.create(
                     name=fake.unique.sentence(nb_words=5),
                     description=fake.paragraph(),
-                    price=fake.random_int(min=500, max=32_000),
+                    price=fake.random_int(min=50, max=150),
                 )
-                status_date = fake.date_between(date(2024, 1, 1), date(2024, 5, 1))
-                models.Deal.objects.create(
+                status_time = fake.date_time_between(
+                    datetime(2024, 1, 1), datetime(2024, 8, 1)
+                )
+                create_deal(
+                    service=service,
                     salesman=salesman,
                     attributed_to=attributed_to,
                     service_seeker=service_seeker,
-                    service=service,
-                    date_of_state=status_date,
+                    time_of_state=make_aware(status_time),
                 )
-                status_date += timedelta(fake.random_int(min=2, max=20))
-                models.Deal.objects.create(
+
+                status_time += timedelta(fake.random_int(min=2, max=20))
+                create_deal(
+                    service=service,
                     salesman=salesman,
                     attributed_to=attributed_to,
                     service_seeker=service_seeker,
-                    service=service,
-                    date_of_state=status_date,
+                    time_of_state=make_aware(status_time),
                     status=1,
                 )
-                status_date += timedelta(fake.random_int(min=2, max=20))
-                models.Deal.objects.create(
+                status_time += timedelta(fake.random_int(min=2, max=20))
+                create_deal(
+                    service=service,
                     salesman=salesman,
                     attributed_to=attributed_to,
                     service_seeker=service_seeker,
-                    service=service,
-                    date_of_state=status_date,
+                    time_of_state=make_aware(status_time),
                     status=100,
                 )
 
         for salesman in salesmen:
             attributed_to = salesman.branches.first()
-            for _ in range(3):
+            for _ in range(5):
                 service_seeker = fake.random_element(clients).user
                 service = Service.objects.create(
                     name=fake.unique.sentence(nb_words=5),
                     description=fake.paragraph(),
-                    price=fake.random_int(min=500, max=32_000),
+                    price=fake.random_int(min=20, max=45),
                 )
-                status_date = fake.date_between(date(2024, 1, 1), date(2024, 5, 1))
-                models.Deal.objects.create(
+                status_time = fake.date_time_between(
+                    datetime(2024, 4, 1), datetime(2024, 8, 1)
+                )
+                create_deal(
+                    service=service,
                     salesman=salesman,
                     attributed_to=attributed_to,
                     service_seeker=service_seeker,
-                    service=service,
-                    date_of_state=status_date,
+                    time_of_state=make_aware(status_time),
+                    status=0,
                 )
-                status_date += timedelta(fake.random_int(min=2, max=20))
-                models.Deal.objects.create(
+                status_time += timedelta(fake.random_int(min=2, max=20))
+                create_deal(
+                    service=service,
                     salesman=salesman,
                     attributed_to=attributed_to,
                     service_seeker=service_seeker,
-                    service=service,
-                    date_of_state=status_date,
+                    time_of_state=make_aware(status_time),
                     status=1,
                 )
-                status_date += timedelta(fake.random_int(min=2, max=20))
-                models.Deal.objects.create(
+                status_time += timedelta(fake.random_int(min=2, max=20))
+                create_deal(
+                    service=service,
                     salesman=salesman,
                     attributed_to=attributed_to,
                     service_seeker=service_seeker,
-                    service=service,
-                    date_of_state=status_date,
+                    time_of_state=make_aware(status_time),
                     status=-1,
                 )
 except:

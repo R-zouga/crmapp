@@ -1,0 +1,55 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /*color schema variables*/
+    --background-color-300: #fdfcec;
+    --background-color-400: #fefcfb;
+    --primary-color-300: #80bdff;
+    --primary-color-400: #007BFF;
+    --primary-color-500: #0066d4;
+    --primary-color-600: #003d80;
+    --accent-color-300: #89dcf5;
+    --accent-color-400: #4cc9f0;
+    --accent-color-500: #3bc4ef;
+    --accent-color-600: #1099c4;
+    --text-color: #000;
+    --success-color: #28A745;
+    --error-color: #DC3545;
+    --warning-color: #FFC107;
+    --padding-inline: 5%;
+
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: var(--background-color-400);
+    color: var(--text-color);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+a {
+    color: var(--primary-color-400);
+    font-weight: 600;
+    text-decoration-style: dashed;
+}
+
+a:hover {
+    color: var(--primary-color-600);
+}
+
+section.container {
+    padding-inline: var(--padding-inline);
+    margin-bottom: 30px;
+}
+
+section.skeleton {
+    margin-top: 50px;
+}
+

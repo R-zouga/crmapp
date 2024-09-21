@@ -1,0 +1,50 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="description"
+                content="The Generic App Designed to make Customer Relationship Management less cumbersome and a lot more easy">
+        <meta name="author" content="Rida Zouga">
+
+        {#========== Favorite icon ==========#}
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+
+        {#========== Boxicons font icons library ==========#}
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+        {#========== Google fonts link ==========#}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                rel="stylesheet">
+
+        {#========== Normalize css for browsers ==========#}
+        <link rel="stylesheet" href="{% static 'basiccss/normalize.css' %}">
+
+        {#========== The Skeleton css file that will contain css variables, and basic styling and utilities for almost all pages ==========#}
+        <link rel="stylesheet" href="{% static 'basiccss/skeleton.css' %}">
+
+        {#========== Block for basic css files ==========#}
+        {% block styles1 %}{% endblock styles1 %}
+
+        {#========== Title block ==========#}
+        <title>
+            {% block title %}
+                Manage your services in an easy and intuitive way | Generic CRM
+            {% endblock title %}
+        </title>
+    </head>
+
+    <body>
+        {#========== All content goes here for ALL remaining templates ==========#}
+        {% block body %}{% endblock body %}
+
+        {#========== Manage all js scripts in this block =========#}
+        {% block scripts1 %}{% endblock scripts1%}
+    </body>
+</html>
+
+

@@ -1,0 +1,59 @@
+{% extends "customcomponents/dashboard.html" %}
+{% load static %}
+{% block styles3 %}
+    <link rel="stylesheet" href="{% static 'customcss/table.css' %}">
+    <link rel="stylesheet" href="{% static 'customcss/form.css' %}">
+{% endblock styles3 %}
+
+{% block dashboard %}
+    <h2 class="table">Schedule Meeting for your next Deal with {{ deal.service_seeker.full_name }}</h2>
+
+    <form method="post" action="{% url 'set-meeting' deal.id %}">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div>
+            <label for="scheduled_time">Select Date and Time:</label>
+            {{ form.scheduled_time }}
+            {{ form.scheduled_time.errors}}
+        </div>
+
+        <div>
+            <label for="google_meet_url">Google Meet URL:</label>
+            {{ form.google_meet_url }}
+            {{ form.google_meet_url.erros }}
+        </div>
+
+        <button type="submit" class="button">Schedule</button>
+    </form>
+
+{% endblock dashboard %}
+{% block scripts2 %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const occupiedHours = {{ occupied_hours|safe }};
+            const datetimeInput = document.querySelector('input[type="datetime-local"]');
+
+            // Ensure minutes are always set to 00 when selecting a time
+            datetimeInput.addEventListener('input', function (event) {
+                let selectedDateTime = new Date(event.target.value);
+
+                // Set minutes to 00 if not already
+                selectedDateTime.setMinutes(0);
+                selectedDateTime.setSeconds(0);
+                console.log("Heloo world")
+
+                // Update the input value with minutes and seconds set to 00
+                const formattedDate = selectedDateTime.toISOString().slice(0, 16); // Get 'YYYY-MM-DDTHH:MM'
+                event.target.value = formattedDate;
+
+                // Check if the selected time is an occupied hour
+                const selectedHour = formattedDate.slice(0, 13);  // 'YYYY-MM-DDTHH'
+                if (occupiedHours.includes(selectedHour)) {
+                    alert('This time slot is already occupied.');
+                    event.target.value = '';
+                }
+            });
+        });
+    </script>
+{% endblock scripts2 %}

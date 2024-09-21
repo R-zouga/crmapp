@@ -1,0 +1,26 @@
+{% extends 'salesman/dashboard.html' %}
+{% load static %}
+{% block styles3 %}
+    <link rel="stylesheet" href="{% static 'customcss/table.css' %}">
+    <link rel="stylesheet" href="{% static 'customcss/form.css' %}">
+{% endblock styles3 %}
+{% block dashboard %}
+    <h2 class="table">Here are your deals waiting for a meeting</h2>
+    {% if deals_waiting_meeting %}
+        <table id="table">
+            <tr>
+                <th>Seeker Full Name</th>
+                <th>Service Name</th>
+            </tr>
+            {% for record in deals_waiting_meeting %}
+                <tr>
+                    <td>{{ record.service_seeker.full_name }} </td>
+                    <td><a href="{% url 'set-meeting' record.id %}">{{ record.service }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p class="empty">You don't have any deals waiting for your attention at the moment.</p>
+    {% endif %}
+
+{% endblock dashboard %}

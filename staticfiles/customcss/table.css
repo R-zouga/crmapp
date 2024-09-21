@@ -1,0 +1,27 @@
+h2.table {
+    margin-block: 50px 30px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 5px;
+    text-align: left;
+    border-bottom: 1px solid #888;
+}
+
+tr:hover {
+    background-color: #D6EEEE;
+}
+
+table .button {
+    padding-inline: 15px;
+}
+
+p.empty {
+    font-size: 1.5rem;
+    font-weight: 500;
+}

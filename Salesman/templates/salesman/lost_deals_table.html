@@ -1,0 +1,36 @@
+{% load custom_filter %}
+{% if lost_deals %}
+    <table id="table">
+        <tr>
+            <th>Time of State</th>
+            <th>Seeker Full Name</th>
+            <th>Representing</th>
+            <th>Attributed to Branch</th>
+            <th>Service Name</th>
+            <th></th>
+        </tr>
+        {% for record in lost_deals %}
+            <tr>
+                <td>{{ record.time_of_state|custom_date }} </td>
+                <td>{{ record.service_seeker.full_name }} </td>
+                <td>{{ record.representing }} </td>
+                <td>{{ record.attributed_to }} </td>
+                <td>{{ record.service }} </td>
+                <td>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button class="button" type="submit"
+                                hx-target="table"
+                                hx-post="{% url 'further-motivation' record.id %}"
+                                hx-swap="outerHTML"
+                                hx-confirm="Are you sure you want another chance with this deal for further motivation?">
+                            Append
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p class="empty">Excellent, you don't have any lost deals at ALL!</p>
+{% endif %}

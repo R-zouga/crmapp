@@ -1,0 +1,47 @@
+/*This is a utility style file for all forms */
+
+form {
+    display: grid;
+    row-gap: 15px;
+    justify-items: start;
+}
+
+form div {
+    display: grid;
+}
+
+input {
+    padding: 5px 5px 5px 10px;
+    width: 250px;
+}
+
+.button {
+    font-size: 1.125rem;
+    font-weight: 600;
+    padding: 10px 30px;
+    background-color: var(--accent-color-300);
+    color: var(--text-color);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.5s;
+}
+
+.button:hover {
+    background-color: var(--accent-color-500);
+}
+
+.errorlist {
+    color: var(--error-color);
+}
+
+ul.errorlist {
+    list-style: inside "- ";
+}
+
+div.help {
+    margin-top: 40px;
+}
+
+input[type=url] {
+    width: 400px;
+}

@@ -1,0 +1,39 @@
+{% load custom_filter %}
+{% if appended_deals %}
+    <table id="table">
+        <tr>
+            <th>Time of State</th>
+            <th>Seeker Full Name</th>
+            <th>Representing</th>
+            <th>Attributed to Branch</th>
+            <th>Service Name</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        {% for record in appended_deals %}
+            <tr>
+                <td>{{ record.time_of_state|custom_date }} </td>
+                <td>{{ record.service_seeker.full_name }} </td>
+                <td>{{ record.representing }} </td>
+                <td>{{ record.attributed_to }} </td>
+                <td>{{ record.service }} </td>
+                <td>{{ record.get_status_display }}</td>
+                <td>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button class="button" type="submit"
+                                hx-target="table"
+                                hx-post="{% url 'meeting-review' record.id %}"
+                                hx-swap="outerHTML"
+                                hx-confirm="Confirm scheduling this deal for a meeting.">
+                            Schedule
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p class="empty">You don't have any appended deals at the moment. Maybe that's your chance to catch on with your
+        lost ones.</p>
+{% endif %} 

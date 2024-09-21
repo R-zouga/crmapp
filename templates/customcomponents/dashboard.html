@@ -1,0 +1,35 @@
+{% extends 'basiccomponents/base.html' %}
+{% load static %}
+{% load custom_filter %}
+
+
+{% block styles2 %}
+    <link rel="stylesheet" href="{% static 'customcss/dashboard.css' %}">
+    {% block styles3 %}{% endblock styles3 %}
+{% endblock styles2 %}
+
+
+
+{% block content %}
+    {% if user.last_logout %}
+        <h1>Welcome Back {{ user.full_name }}</h1>
+        <p>Last Seen: {{ user.last_logout|custom_date }}</p>
+    {% else %}
+        <h1>Hello {{ user.full_name }} </h1>
+        <p>Congrats on making it to your dashboard for the first time!</p>
+        <p>Your first Login: {{ user.last_login|custom_date }}</p>
+    {% endif %}
+    <aside>
+        <nav>
+            <a href="{% url 'history' user.current_status %}">Your history</a>
+            {% block navigation %}{% endblock navigation %}
+        </nav>
+    </aside>
+    <main>
+        {% block dashboard %}{% endblock dashboard %}
+    </main>
+{% endblock content %}
+{% block scripts1 %}
+    <script src="{% static 'basicjs/header.js' %}"></script>
+    {% block scripts2 %}{% endblock scripts2 %}
+{% endblock scripts1 %}

@@ -1,12 +1,16 @@
 from pathlib import Path
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-qbot(*(j(#c!p5se2n)*4rja$ia3i1uqmzbza#jx2_ldljvxxz"
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["165.227.135.34", "genericcrm.online", "www.genericcrm.online"]
 
 
 INSTALLED_APPS = [
@@ -61,9 +65,9 @@ WSGI_APPLICATION = "CRMProject.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "CRMProject",
-        "USER": "user",
-        "PASSWORD": "test123",
+        "NAME": os.environ.get("DB_NAME"),
+        "USER": os.environ.get("DB_USER"),
+        "PASSWORD": os.environ.get("DB_PASSWORD"),
         "HOST": "localhost",
     }
 }
@@ -97,14 +101,16 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "static"
 
 LOGOUT_REDIRECT_URL = "/"
 
 AUTH_USER_MODEL = "User.User"
-DEFAULT_FROM_EMAIL = "djano@gmail.com"
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
+DEFAULT_FROM_EMAIL = "crmproject@gmail.com"
+
+EMAIL_HOST = "sandbox.smtp.mailtrap.io"
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = "2525"
+EMAIL_USE_TLS = True
+

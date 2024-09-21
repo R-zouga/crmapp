@@ -1,0 +1,42 @@
+aside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-height: 100dvh;
+    width: 300px;
+    background-color: var(--background-color-300);
+    display: grid;
+    justify-items: center;
+    z-index: 1;
+    transform: translateX(-100%);
+    transition: ease-in 500ms;
+}
+
+footer {
+    position: relative;
+    z-index: 2;
+}
+
+h2.plot {
+    margin-block: 30px;
+}
+
+aside nav {
+    display: grid;
+    row-gap: 10px;
+    align-self: center;
+}
+
+aside a {
+    color: inherit;
+    text-decoration: none;
+}
+
+aside a:hover {
+    color: var(--primary-color-400);
+}
+
+.show_aside {
+    transform: translateX(0);
+}
+

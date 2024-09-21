@@ -1,0 +1,52 @@
+header {
+    padding-block: 20px;
+    padding-inline: var(--padding-inline);
+
+    display: flex;
+    align-items: center;
+    color: var(--primary-color-500);
+}
+
+header a {
+    text-decoration: none;
+    color: inherit;
+}
+
+header button:hover, header a:hover {
+    color: var(--primary-color-300);
+}
+
+header a.app_logo {
+    font-size: 2rem;
+    letter-spacing: 3px;
+}
+
+header nav {
+    margin-left: 30%;
+    font-size: 1.25rem;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-grow: 1;
+}
+
+header button {
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    background-color: transparent;
+    font-weight: 600;
+}
+
+div.icons {
+    font-size: 2rem;
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
