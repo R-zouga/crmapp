@@ -7,7 +7,7 @@ from CRMProject import baseviews
 urlpatterns = [
 
     path("", baseviews.IndexView.as_view(), name="index"),
-    path("<str:current_status>/history", baseviews.HistoryView.as_view(), name="history"),
+    path("<str:current_status>/history/", baseviews.HistoryView.as_view(), name="history"),
     path("Service/", include("Service.urls")),
     path("Salesman/", include("Salesman.urls")),
     path("Supervisor/", include("Supervisor.urls")),
