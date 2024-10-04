@@ -1,5 +1,4 @@
 /*This is a utility style file for all forms */
-
 form {
     display: grid;
     row-gap: 15px;
@@ -10,9 +9,13 @@ form div {
     display: grid;
 }
 
-input {
+input, textarea, select {
     padding: 5px 5px 5px 10px;
     width: 250px;
+}
+
+textarea {
+    width: 500px;
 }
 
 .button {
@@ -45,3 +48,28 @@ div.help {
 input[type=url] {
     width: 400px;
 }
+
+i.bx-x, i.bx-check {
+    font-size: 4rem;
+    opacity: 0.5;
+
+}
+
+button.none {
+    border: none;
+    background-color: transparent;
+}
+
+i.bx-x {
+    color: var(--error-color);
+}
+
+i.bx-check{
+    color: var(--success-color);
+}
+
+i.bx-x:hover, i.bx-check:hover {
+    opacity: 1;
+}
+
+

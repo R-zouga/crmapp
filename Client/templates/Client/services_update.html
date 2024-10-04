@@ -1,0 +1,33 @@
+{% extends 'Client/dashboard.html' %}
+{% load static %}
+
+{% block styles3 %}
+    <link rel="stylesheet" href="{% static 'customcss/table.css' %}">
+{% endblock styles3 %}
+
+{% block dashboard %}
+    <h2 class="table">Your latest status on all your services</h2>
+
+    <table>
+        <tr>
+            <td>Time of state</td>
+            <td>Status</td>
+            <td>Salesman</td>
+            <td>Salesman's branch</td>
+            <td>Service name</td>
+            <td>Service description</td>
+            <td>Service price</td>
+        </tr>
+        {% for record in services %}
+            <tr>
+                <td>{{ record.time_of_state|date:"d/m/Y" }}</td>
+                <td>{{ record.get_status_display }}</td>
+                <td>{{ record.salesman.user.full_name }}</td>
+                <td>{{ record.attributed_to.group }}</td>
+                <td>{{ record.service }}</td>
+                <td>{{ record.service.description }}</td>
+                <td>{{ record.service.price }} $</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock dashboard %}

@@ -14,7 +14,7 @@ th, td {
 }
 
 tr:hover {
-    background-color: #D6EEEE;
+    background-color: var(--table-hover);
 }
 
 table .button {

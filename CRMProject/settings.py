@@ -99,6 +99,7 @@ STATICFILES_DIRS = [
 STATIC_URL = "static/"
 
 LOGOUT_REDIRECT_URL = "/"
+LOGIN_URL = "/accounts/login/"
 
 AUTH_USER_MODEL = "User.User"
 DEFAULT_FROM_EMAIL = "djano@gmail.com"
@@ -108,3 +109,5 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
+
+

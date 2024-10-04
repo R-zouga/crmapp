@@ -14,7 +14,10 @@ class LoginView(auth_views.LoginView):
         """Security check complete. Log the user in and redirect him to his page based on his status."""
         user = form.get_user()
         login(self.request, user)
-        return redirect(f"/{user.current_status}/dashboard/")
+        if user.is_superuser:
+            return redirect("/admin/")
+        else:
+            return redirect(f"/{user.current_status}/dashboard/")
 
 
 class CreateNewClientView(SuccessMessageMixin, FormView):

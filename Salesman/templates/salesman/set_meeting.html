@@ -21,7 +21,7 @@
         <div>
             <label for="google_meet_url">Google Meet URL:</label>
             {{ form.google_meet_url }}
-            {{ form.google_meet_url.erros }}
+            {{ form.google_meet_url.errors }}
         </div>
 
         <button type="submit" class="button">Schedule</button>
@@ -41,7 +41,7 @@
                 // Set minutes to 00 if not already
                 selectedDateTime.setMinutes(0);
                 selectedDateTime.setSeconds(0);
-                console.log("Heloo world")
+
 
                 // Update the input value with minutes and seconds set to 00
                 const formattedDate = selectedDateTime.toISOString().slice(0, 16); // Get 'YYYY-MM-DDTHH:MM'

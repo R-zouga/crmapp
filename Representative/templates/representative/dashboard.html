@@ -1,0 +1,43 @@
+{% extends 'customcomponents/dashboard.html' %}
+{% load custom_filter %}
+{% load static %}
+
+{% block styles3 %}
+    <link rel="stylesheet" href="{% static 'customcss/table.css' %}">
+{% endblock styles3 %}
+
+{% block navigation %}
+    <a href="https://www.google.com/">google</a>
+{% endblock navigation %}
+
+
+{% block dashboard %}
+    <h2 class="table">Your following meetings</h2>
+    {% if upcoming_meetings %}
+        <table>
+            <tr>
+                <td>Time of meeting</td>
+                <td>Representing</td>
+                <td>Salesman</td>
+                <td>Salesman's branch</td>
+                <td>Service name</td>
+                <td>Service description</td>
+                <td>Service price</td>
+            </tr>
+            {% for upcoming_meeting in upcoming_meetings %}
+                <tr>
+                    <td>{{ upcoming_meeting.scheduled_time|custom_date }}</td>
+                    <td>{{ upcoming_meeting.deal_id.representing }}</td>
+                    <td>{{ upcoming_meeting.deal_id.salesman.user.full_name }}</td>
+                    <td>{{ upcoming_meeting.deal_id.attributed_to.group }}</td>
+                    <td>{{ upcoming_meeting.deal_id.service }}</td>
+                    <td>{{ upcoming_meeting.deal_id.service.description }}</td>
+                    <td>{{ upcoming_meeting.deal_id.service.price }} $</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p class="empty">No meetings for you at the moment.</p>
+    {% endif %}
+{% endblock dashboard %}
+

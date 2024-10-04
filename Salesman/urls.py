@@ -13,5 +13,6 @@ urlpatterns = [
     path("waits-meeting/", views.WaitsMeetingView.as_view(), name="waits-meeting"),
     path("set-meeting/<int:id>/", views.SetMeetingView.as_view(), name="set-meeting"),
     path("confirm-meeting-result/", views.MeetingResultView.as_view(), name="confirm-meeting-result"),
-
+    path("success/<int:id>/", views.success_view, name="success"),
+    path("failure/<int:id>/", views.failure_view, name="failure"),
 ]

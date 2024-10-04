@@ -1,0 +1,22 @@
+{% extends 'Client/dashboard.html' %}
+{% load static %}
+
+{% block styles3 %}
+    <link rel="stylesheet" href="{% static 'customcss/form.css' %}">
+{% endblock styles3 %}
+
+{% block dashboard %}
+    <form method="post" id="service-form">
+        {% csrf_token %}
+        <h1>Create a New Service</h1>
+        {% for field in form %}
+            <div>
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="button">Create</button>
+    </form>
+{% endblock dashboard %}

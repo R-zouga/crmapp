@@ -18,6 +18,7 @@ ul {
 .messages:has(.success) {
     background-color: #81f1c1;
     border-color: #badbcc;
+    color: black;
 }
 
 .messages:has(.error) {

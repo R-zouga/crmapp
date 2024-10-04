@@ -1,0 +1,26 @@
+{% if reviews %}
+    <table id="table">
+        <tr>
+            <th>Client Full Name</th>
+            <th>Validate</th>
+        </tr>
+        {% for record in reviews %}
+            <tr>
+                <td>{{ record.client.user.full_name }} </td>
+                <td>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="none"
+                                hx-target="table"
+                                hx-post="{% url 'validate-record' record.client.user %}"
+                                hx-swap="outerHTML">
+                            <i class='bx bx-check'></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p class="empty">No requests are worth your attention at the moment.</p>
+{% endif %}

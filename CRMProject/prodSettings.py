@@ -104,6 +104,8 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "static"
 
 LOGOUT_REDIRECT_URL = "/"
+LOGIN_URL = "/accounts/login/"
+
 
 AUTH_USER_MODEL = "User.User"
 DEFAULT_FROM_EMAIL = "crmproject@gmail.com"
@@ -113,4 +115,7 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = "2525"
 EMAIL_USE_TLS = True
+
+
+
 

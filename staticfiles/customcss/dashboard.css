@@ -9,7 +9,7 @@ aside {
     justify-items: center;
     z-index: 1;
     transform: translateX(-100%);
-    transition: ease-in 500ms;
+    transition: ease-in transform 500ms;
 }
 
 footer {

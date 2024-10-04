@@ -1,0 +1,14 @@
+{% extends 'salesman/dashboard.html' %}
+{% load static %}
+{% block styles3 %}
+    <link rel="stylesheet" href="{% static 'customcss/table.css' %}">
+    <link rel="stylesheet" href="{% static 'customcss/form.css' %}">
+{% endblock styles3 %}
+{% block dashboard %}
+    <h2 class="table">How did it go?</h2>
+    {% include "salesman/meeting_result_table.html" %}
+{% endblock dashboard %}
+
+{% block scripts2 %}
+    <script src="{% static 'basicjs/htmx.js' %}"></script>
+{% endblock scripts2 %}

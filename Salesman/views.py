@@ -1,4 +1,6 @@
-from django.db.models import Sum, Max, Subquery, OuterRef, Q
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Sum, Max, Subquery, OuterRef
 from django.db.models.functions import ExtractMonth
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
@@ -6,13 +8,12 @@ from django.views.generic import TemplateView
 from Salesman.models import Salesman, Deal, Meeting
 from django.utils.timezone import now
 import calendar
-from datetime import date
 from django.views.generic.edit import FormView
 from django.core.mail import send_mail
 from Salesman.forms import MeetingForm
 
 
-class SalesmanDashboard(TemplateView):
+class SalesmanDashboard(LoginRequiredMixin, TemplateView):
     template_name = "Salesman/dashboard.html"
 
     def get_context_data(self, **kwargs):
@@ -40,7 +41,7 @@ class SalesmanDashboard(TemplateView):
         return context
 
 
-class LostDeals(TemplateView):
+class LostDeals(LoginRequiredMixin, TemplateView):
     template_name = "salesman/lost_deals.html"
 
     def get_context_data(self, **kwargs):
@@ -64,6 +65,7 @@ class LostDeals(TemplateView):
         return context
 
 
+@login_required
 def further_motivation(request, id):
     record = Deal.objects.get(id=id)
     record.pk = None
@@ -90,7 +92,7 @@ def further_motivation(request, id):
     )
 
 
-class AppendedDeals(TemplateView):
+class AppendedDeals(LoginRequiredMixin, TemplateView):
     template_name = "salesman/appended_deals.html"
 
     def get_context_data(self, **kwargs):
@@ -114,6 +116,7 @@ class AppendedDeals(TemplateView):
         return context
 
 
+@login_required
 def meeting_review(request, id):
     record = Deal.objects.get(id=id)
     record.pk = None
@@ -140,7 +143,7 @@ def meeting_review(request, id):
     )
 
 
-class WaitsMeetingView(TemplateView):
+class WaitsMeetingView(LoginRequiredMixin, TemplateView):
     template_name = "salesman/waits_meeting.html"
 
     def get_context_data(self, **kwargs):
@@ -167,7 +170,7 @@ class WaitsMeetingView(TemplateView):
         return context
 
 
-class SetMeetingView(FormView):
+class SetMeetingView(LoginRequiredMixin, FormView):
     template_name = "salesman/set_meeting.html"
     form_class = MeetingForm
 
@@ -233,5 +236,63 @@ class SetMeetingView(FormView):
         )
 
 
-class MeetingResultView(TemplateView):
-    pass
+class MeetingResultView(LoginRequiredMixin, TemplateView):
+    template_name = "salesman/meeting_result.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["meetings"] = Meeting.objects.filter(
+            deal_id__salesman__user=self.request.user, scheduled_time__lte=now()
+        ).select_related(
+            "deal_id__salesman__user",
+            "deal_id__service_seeker",
+            "deal_id__representing",
+            "deal_id__attributed_to__group",
+            "deal_id__service",
+        )
+        return context
+
+
+@login_required
+def success_view(request, id):
+    record = Meeting.objects.get(deal_id=id)
+    deal = record.deal_id
+    deal.pk = None
+    deal.status = 100
+    deal.time_of_state = now()
+    deal.save()
+    record.delete()
+    context = {
+        "meetings": Meeting.objects.filter(
+            deal_id__salesman__user=request.user, scheduled_time__lte=now()
+        ).select_related(
+            "deal_id__salesman__user",
+            "deal_id__service_seeker",
+            "deal_id__representing",
+            "deal_id__attributed_to__group",
+            "deal_id__service",
+        )
+    }
+    return render(request, "salesman/meeting_result_table.html", context)
+
+@login_required
+def failure_view(request, id):
+    record = Meeting.objects.get(deal_id=id)
+    deal = record.deal_id
+    deal.pk = None
+    deal.status = -1
+    deal.time_of_state = now()
+    deal.save()
+    record.delete()
+    context = {
+        "meetings": Meeting.objects.filter(
+            deal_id__salesman__user=request.user, scheduled_time__lte=now()
+        ).select_related(
+            "deal_id__salesman__user",
+            "deal_id__service_seeker",
+            "deal_id__representing",
+            "deal_id__attributed_to__group",
+            "deal_id__service",
+        )
+    }
+    return render(request, "salesman/meeting_result_table.html", context)

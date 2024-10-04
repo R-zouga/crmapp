@@ -1,0 +1,17 @@
+{% extends 'Client/dashboard.html' %}
+{% load static %}
+{% block styles3 %}
+    <link rel="stylesheet" href="{% static 'customcss/form.css' %}">
+{% endblock styles3 %}
+
+{% block dashboard %}
+    <p style="margin-top: 50px;"> Okay, please make sure to send an email to <span style="font-weight: 800">{{ manager.user }}</span> explaining your motivation for becoming a
+        representative
+    </p>
+    <p style="margin-top: 20px;">Only afterward, make sure to confirm your request for further processing.</p>
+    <form method="POST" style="margin-top: 30px">
+        {% csrf_token %}
+        <button type="submit" class="button">Confirm</button>
+    </form>
+{% endblock dashboard %}
+

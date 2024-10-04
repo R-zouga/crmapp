@@ -1,30 +1,40 @@
 {% extends 'customcomponents/dashboard.html' %}
-{% load custom_filter %}
 {% load static %}
+{% block styles3 %}
+    <link rel="stylesheet" href="{% static 'customcss/table.css' %}">
+{% endblock styles3 %}
 
 {% block navigation %}
-    <a href="{% url 'lost-deals' %}">Your lost deals</a>
-    <a href="{% url 'appended-deals' %}">Your appended deals</a>
-    <a href="{% url 'waits-meeting' %}">Set Meeting</a>
-    <a href="{% url 'confirm-meeting-result' %}">Meeting Review</a>
+    <a href="{% url 'review-applicants' %}">Review Applicants</a>
 {% endblock navigation %}
 {% block dashboard %}
-    <h2 class="table">Your following meetings</h2>
-    {% if upcoming_meetings %}
-        <ul>
-            {% for upcoming_meeting in upcoming_meetings %}
-                <li>You have a meeting with {{ upcoming_meeting.deal_id.service_seeker.full_name }}
-                    at <b>{{ upcoming_meeting.scheduled_time|custom_date }}</b></li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>You don't have any planned meetings at the moment.</p>
-    {% endif %}
+    <h2 class="table">You are in charge of {{ manager.manager.department.group.name }} Department</h2>
+    <p>Here are the supervisors currently under your department:</p>
+    <table style="margin-block: 20px">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Joined the department at</th>
+            <th>Last Seen</th>
+        </tr>
+        {% for supervisor in supervisors %}
+            <tr>
+                <td>{{ supervisor.user.first_name }} </td>
+                <td>{{ supervisor.user.last_name }} </td>
+                <td>{{ supervisor.user.email }} </td>
+                <td>{{ supervisor.user.phone_number }}</td>
+                <td> {{ supervisor.user.latest_record.0.join_date|date:"d/m/Y" }}</td>
+                <td>{{ supervisor.user.last_logout|date:"d/m/Y \a\t H:i" }} </td>
+            </tr>
+        {% endfor %}
+    </table>
 
     <h2 class="plot">Your earnings for This Year</h2>
     <div id="earnings-histogram" class="plot" style="width: 100%; height: 400px;"></div>
-
 {% endblock dashboard %}
+
 {% block scripts2 %}
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
@@ -112,6 +122,5 @@
 
     </script>
 {% endblock scripts2 %}
-
 
 

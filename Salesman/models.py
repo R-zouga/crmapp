@@ -12,6 +12,9 @@ class Salesman(models.Model):
     branches = models.ManyToManyField("BranchGroup", related_name="salesmen_set")
     max_enrolled_branches = models.PositiveSmallIntegerField(default=1)
 
+    def __str__(self):
+        return self.user.full_name
+
     class Meta:
         verbose_name_plural = "Salesmen"
 
@@ -55,7 +58,7 @@ class BranchGroup(CategoryGroup):
 
 class Meeting(models.Model):
     deal_id = models.OneToOneField(
-        Deal, on_delete=models.CASCADE, db_column="deal_id"
+        Deal, on_delete=models.CASCADE, db_column="deal_id", primary_key=True
     )
     scheduled_time = models.DateTimeField()
-    google_meet_url = models.URLField()
+    google_meet_url = models.URLField(unique=True)

@@ -1,0 +1,44 @@
+{% if meetings %}
+    <table id="table">
+        <tr>
+            <th>Seeker Full Name</th>
+            <th>Representing</th>
+            <th>Attributed to Branch</th>
+            <th>Service Name</th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% for record in meetings %}
+            <tr>
+                <td>{{ record.deal_id.service_seeker.full_name }} </td>
+                <td>{{ record.deal_id.representing }} </td>
+                <td>{{ record.deal_id.attributed_to }} </td>
+                <td>{{ record.deal_id.service }} </td>
+                <td>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="none"
+                                hx-target="table"
+                                hx-post="{% url 'success' record.deal_id.id %}"
+                                hx-swap="outerHTML">
+                            <i class='bx bx-check'></i>
+                        </button>
+                    </form>
+                </td>
+                <td>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="none"
+                                hx-target="table"
+                                hx-post="{% url 'failure' record.deal_id.id %}"
+                                hx-swap="outerHTML">
+                            <i class='bx bx-x'></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p class="empty">No meetings are upholding for you at the moment</p>
+{% endif %}

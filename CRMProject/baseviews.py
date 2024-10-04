@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from User.models import UserHistory
 
@@ -6,7 +7,7 @@ class IndexView(TemplateView):
     template_name = "basiccomponents/index.html"
 
 
-class HistoryView(TemplateView):
+class HistoryView(LoginRequiredMixin, TemplateView):
     template_name = "customcomponents/history.html"
 
     def get_context_data(self, **kwargs):

@@ -1,0 +1,14 @@
+{% extends 'manager/dashboard.html' %}
+{% load static %}
+{% block styles3 %}
+    <link rel="stylesheet" href="{% static 'customcss/table.css' %}">
+    <link rel="stylesheet" href="{% static 'customcss/form.css' %}">
+{% endblock styles3 %}
+{% block dashboard %}
+    <h2 class="table">Review status upgrade requests</h2>
+    {% include "manager/review_table.html" %}
+{% endblock dashboard %}
+
+{% block scripts2 %}
+    <script src="{% static 'basicjs/htmx.js' %}"></script>
+{% endblock scripts2 %}
